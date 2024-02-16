@@ -1,0 +1,12 @@
+{
+    "name": "lincoln/example",
+    "authors": [
+        {
+            "name": "lincolngondin",
+            "email": "lincolngondim@gmail.com"
+        }
+    ],
+    "require": {
+        "ramsey/uuid": "^4.7"
+    }
+}
