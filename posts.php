@@ -1,10 +1,12 @@
 <?php
+require("autoload.php");
 session_start();
+
 if(!isset($_SESSION["auth"])){
     header("Location: /login.php");
 }
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    require("db.php");
     $db = new DatabaseConnection();
     $deleteStmt = $db->pdo->prepare("DELETE FROM posts WHERE id = :id AND user_id = :user_id;");
     $deleteStmt->bindValue(":id", $_POST["post_id"]);
@@ -28,7 +30,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
     <nav class="navbar navbar-expand bg-dark" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/home.php">Home</a>
+            <a class="navbar-brand" href="/index.php">Home</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
@@ -53,19 +55,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <a href="/write.php"><button class="btn btn-success text-light">Criar novo post!</button></a>
             </div>
         </div>
-        <?php
-require("db.php");
-$db = new DatabaseConnection();
-$pdo = $db->pdo;
-$stmt = $pdo->prepare("SELECT * FROM posts WHERE user_id = :user_id;");
-$stmt->bindValue(":user_id", $_SESSION["user_id"]);
-$stmt->execute();
+<?php
+    $db = new DatabaseConnection();
+    $pdo = $db->pdo;
+    $stmt = $pdo->prepare("SELECT * FROM posts WHERE user_id = :user_id;");
+    $stmt->bindValue(":user_id", $_SESSION["user_id"]);
+    $stmt->execute();
 
-while(true) {
-    $row = $stmt->fetch(PDO::FETCH_NUM);
-    if($row == FALSE){
-        break;
-    }
+    while(true) {
+        $row = $stmt->fetch(PDO::FETCH_NUM);
+        if($row == FALSE){
+            break;
+        }
 ?>
         <div class="row mb-5 border border-1 border-gray">
             <div class="row p-3 m-0 border-bottom border-2 border-black align-items-center">
@@ -98,7 +99,7 @@ while(true) {
                 </p>
             </div>
         </div>
-        <?php } ?>
+<?php } ?>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

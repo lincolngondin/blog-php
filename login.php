@@ -1,8 +1,8 @@
 <?php
+require("autoload.php");
 
 $user = "";
 
-require("db.php");
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $user = $_POST["usuario"];
     $senha = $_POST["senha"];

@@ -1,4 +1,5 @@
 <?php
+include("autoload.php");
 session_start();
 ?>
 <!DOCTYPE html>
@@ -15,7 +16,7 @@ session_start();
 <body>
     <nav class="navbar navbar-expand bg-dark" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/posts.php">Home</a>
+            <a class="navbar-brand" href="/index.php">Home</a>
             <?php if(!isset($_SESSION["auth"])){ ?>
             <a class="nav-link active text-white" href="/login.php">Login</a>
             <?php } else { ?>
@@ -42,18 +43,17 @@ session_start();
                 <p class="h3">Posts:</p>
             </div>
         </div>
-        <?php
-require("db.php");
-require("date.php");
-$db = new DatabaseConnection();
-$stmt = $db->pdo->prepare("SELECT * FROM posts ORDER BY creation_time DESC LIMIT 100;");
-$stmt->execute();
+<?php
+    require("utils/date.php");
+    $db = new DatabaseConnection();
+    $stmt = $db->pdo->prepare("SELECT * FROM posts ORDER BY creation_time DESC LIMIT 100;");
+    $stmt->execute();
 
-while(true) {
-    $row = $stmt->fetch(PDO::FETCH_NUM);
-    if($row == FALSE){
-        break;
-    }
+    while(true) {
+        $row = $stmt->fetch(PDO::FETCH_NUM);
+        if($row == FALSE){
+            break;
+        }
 ?>
         <div class="row mb-5 border border-1 border-gray">
             <div class="row p-3 m-0 border-bottom border-2 border-black">
@@ -67,8 +67,8 @@ while(true) {
                             <?php echo $row[3]; ?>
                         </a> há
                         <?php
-echo GetInterval($row[5]);
-?>
+                            echo GetInterval($row[5]);
+                        ?>
                 </div>
             </div>
             <div class=" row p-3 m-0">
@@ -77,7 +77,7 @@ echo GetInterval($row[5]);
                 </p>
             </div>
         </div>
-        <?php } ?>
+<?php } ?>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

@@ -1,14 +1,15 @@
 <?php
-    require("vendor/autoload.php");
-    use Ramsey\Uuid\Uuid;
-
     session_start();
     if(!isset($_SESSION["auth"])) {
         header("Location: /login.php");
     }
 
+    require("vendor/autoload.php");
+    require("autoload.php");
+    use Ramsey\Uuid\Uuid;
+
+
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-        require("db.php");
         $title = $_POST["title"];
         $content = $_POST["content"];
 
@@ -23,7 +24,7 @@
         $stmt->bindValue(":c", $content);
         $stmt->bindValue(":a", $_SESSION["user_name"]);
         $stmt->bindValue(":u", $_SESSION["user_id"]);
-        require("date.php");
+        require("utils/date.php");
         $actualTime = GetActualTime();
         $stmt->bindValue(":dc", $actualTime);
         $stmt->bindValue(":du", $actualTime);

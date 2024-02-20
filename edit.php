@@ -1,6 +1,8 @@
 <?php
-require("db.php");
+require("autoload.php");
+require("utils/date.php");
 session_start();
+
 if(!isset($_SESSION["auth"])){
     header("Location: /login.php");
 }
@@ -41,7 +43,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
     $updateStmt = $db->pdo->prepare("UPDATE posts SET title = :title, content = :content, last_update = :du WHERE id = :id AND user_id = :user_id;");
     $updateStmt->bindValue(":title", $newTitle);
     $updateStmt->bindValue(":content", $newContent);
-    require("date.php");
     $updateStmt->bindValue(":du", GetActualTime(), PDO::PARAM_STR);
     $updateStmt->bindValue(":id", $post_id);
     $updateStmt->bindValue(":user_id", $_SESSION["user_id"]);
